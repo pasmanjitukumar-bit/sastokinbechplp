@@ -92,3 +92,11 @@ Official references: [Next.js route handlers](https://nextjs.org/docs/app/gettin
 Gmail uses port 587 with mandatory STARTTLS. The local dev launcher exports this computer’s trusted Windows root/intermediate certificates to a temporary public certificate bundle and supplies NODE_EXTRA_CA_CERTS before starting Node. This supports installed antivirus TLS inspection while keeping certificate validation enabled. It does not copy private keys or passwords. Production Vercel uses normal platform trust; the launcher is only for npm run dev.
 
 Local Google credentials are stored only in ignored .env.local. Google Sheets must be shared with the configured service-account email as Editor. SMTP test acceptance confirms Gmail accepted the messages; check the mailbox and spam folder for actual receipt.
+
+## Order API origin configuration
+
+Checkout uses relative /api/order, so orders always go to the current website. The API accepts exact origins from FRONTEND_URL, NEXT_PUBLIC_SITE_URL and comma-separated ALLOWED_ORIGINS. Neither frontend variable overrides the other. In Vercel it also accepts the platform-provided VERCEL_PROJECT_PRODUCTION_URL, VERCEL_URL and VERCEL_BRANCH_URL, using HTTPS. Enable Vercel system environment variables if your project disables them.
+
+For a custom domain set FRONTEND_URL and NEXT_PUBLIC_SITE_URL to the canonical HTTPS origin. List both https://your-domain.com and https://www.your-domain.com in ALLOWED_ORIGINS if both serve the storefront. Do not use wildcards, localhost in production, or paths/query strings. HTTP is rejected in production; missing/null and unlisted Origin headers are rejected. Incoming Host and X-Forwarded-Host cannot expand the allowlist. Production without an allowlist fails closed. Redeploy after environment changes.
+
+After deployment, test an invalid order from the live origin (400 validation error, rather than 403), verify an unlisted origin still gets 403, then submit a clearly labelled test order and check its Sheet row plus both email flags. A successful API response alone does not prove inbox delivery.

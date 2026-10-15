@@ -1,3 +1,4 @@
+import { isAllowedOrigin } from "../../../lib/origins.mjs";
 import { NextResponse } from "next/server";
 import { prepare, processOrder, publicOrder } from "../../../lib/order.mjs";
 import { localRepository, sheetsRepository } from "../../../lib/repository.mjs";
@@ -9,12 +10,9 @@ const locks = new Map(),
 export async function POST(request) {
   let key;
   try {
-    const origin = request.headers.get("origin"),
-      allowed =
-        process.env.FRONTEND_URL ||
-        process.env.NEXT_PUBLIC_SITE_URL ||
-        new URL(request.url).origin;
-    if (!origin || origin !== new URL(allowed).origin)
+    if (
+      !isAllowedOrigin(request.headers.get("origin"), process.env, request.url)
+    )
       return NextResponse.json(
         { error: "Request origin is not allowed." },
         { status: 403 },
