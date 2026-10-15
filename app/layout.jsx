@@ -10,9 +10,9 @@ export const metadata = {
     statusBarStyle: "default",
   },
   icons: {
-    icon: [{ url: "/icons/favicon-v1.png", type: "image/png", sizes: "32x32" }],
+    icon: [{ url: "/icons/favicon-v2.png", type: "image/png", sizes: "32x32" }],
     apple: [
-      { url: "/icons/apple-touch-v1.png", sizes: "180x180", type: "image/png" },
+      { url: "/icons/apple-touch-v2.png", sizes: "180x180", type: "image/png" },
     ],
   },
   title: "Sastokinbech | Everyday finds. Special moments.",
