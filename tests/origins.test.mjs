@@ -34,8 +34,8 @@ test("production ignores localhost config and request-host fallback", () => {
     allowedOrigins(
       { NODE_ENV: "production", FRONTEND_URL: "http://127.0.0.1:3015" },
       "https://evil.test/api/order",
-    ).size,
-    0,
+    ).has("http://127.0.0.1:3015"),
+    false,
   );
   assert.equal(
     isAllowedOrigin(
@@ -82,4 +82,19 @@ test("local origin fallback is restricted to development loopback", () => {
     }),
     false,
   );
+});
+
+test("owner-approved HTTPS custom and Vercel domains are allowed without stale dashboard settings", () => {
+  for (const origin of [
+    "https://sastokinbech.com",
+    "https://www.sastokinbech.com",
+    "https://sastokinbechplp.vercel.app",
+  ])
+    assert.ok(isAllowedOrigin(origin, { NODE_ENV: "production" }));
+  for (const origin of [
+    "http://sastokinbech.com",
+    "https://sastokinbech.com.attacker.test",
+    "https://other.sastokinbech.com",
+  ])
+    assert.equal(isAllowedOrigin(origin, { NODE_ENV: "production" }), false);
 });
