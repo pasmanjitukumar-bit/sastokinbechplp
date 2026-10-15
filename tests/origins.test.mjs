@@ -98,3 +98,23 @@ test("owner-approved HTTPS custom and Vercel domains are allowed without stale d
   ])
     assert.equal(isAllowedOrigin(origin, { NODE_ENV: "production" }), false);
 });
+
+test("product storefront allows only its exact HTTPS origin", () => {
+  assert.ok(
+    isAllowedOrigin("https://product.sastokinbech.com", {
+      NODE_ENV: "production",
+    }),
+  );
+  assert.equal(
+    isAllowedOrigin("http://product.sastokinbech.com", {
+      NODE_ENV: "production",
+    }),
+    false,
+  );
+  assert.equal(
+    isAllowedOrigin("https://product.sastokinbech.com.attacker.test", {
+      NODE_ENV: "production",
+    }),
+    false,
+  );
+});
