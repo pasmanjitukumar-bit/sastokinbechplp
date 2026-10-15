@@ -1,6 +1,20 @@
 import BrandLogo from "../components/BrandLogo";
 import "./globals.css";
+export const viewport = { themeColor: "#183e36" };
 export const metadata = {
+  manifest: "/manifest.webmanifest",
+  applicationName: "SastoKinBech",
+  appleWebApp: {
+    capable: true,
+    title: "SastoKinBech",
+    statusBarStyle: "default",
+  },
+  icons: {
+    icon: [{ url: "/icons/favicon-v1.png", type: "image/png", sizes: "32x32" }],
+    apple: [
+      { url: "/icons/apple-touch-v1.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   title: "Sastokinbech | Everyday finds. Special moments.",
   description:
     "Shop the Sastokinbech saree edit. Cash on Delivery across Nepal.",
